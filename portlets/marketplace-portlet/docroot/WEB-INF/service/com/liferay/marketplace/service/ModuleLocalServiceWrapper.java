@@ -47,9 +47,10 @@ public class ModuleLocalServiceWrapper implements ModuleLocalService,
 	@Override
 	public com.liferay.marketplace.model.Module addModule(long userId,
 		long appId, java.lang.String bundleSymbolicName,
-		java.lang.String contextName) {
+		java.lang.String bundleVersion, java.lang.String contextName)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _moduleLocalService.addModule(userId, appId, bundleSymbolicName,
-			contextName);
+			bundleVersion, contextName);
 	}
 
 	/**
@@ -184,9 +185,10 @@ public class ModuleLocalServiceWrapper implements ModuleLocalService,
 
 	@Override
 	public com.liferay.marketplace.model.Module fetchModule(long appId,
-		java.lang.String bundleSymbolicName, java.lang.String contextName) {
+		java.lang.String bundleSymbolicName, java.lang.String bundleVersion,
+		java.lang.String contextName) {
 		return _moduleLocalService.fetchModule(appId, bundleSymbolicName,
-			contextName);
+			bundleVersion, contextName);
 	}
 
 	@Override

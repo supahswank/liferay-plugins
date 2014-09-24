@@ -55,9 +55,11 @@ public class ModuleLocalServiceUtil {
 
 	public static com.liferay.marketplace.model.Module addModule(long userId,
 		long appId, java.lang.String bundleSymbolicName,
-		java.lang.String contextName) {
+		java.lang.String bundleVersion, java.lang.String contextName)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .addModule(userId, appId, bundleSymbolicName, contextName);
+				   .addModule(userId, appId, bundleSymbolicName, bundleVersion,
+			contextName);
 	}
 
 	/**
@@ -183,8 +185,11 @@ public class ModuleLocalServiceUtil {
 	}
 
 	public static com.liferay.marketplace.model.Module fetchModule(long appId,
-		java.lang.String bundleSymbolicName, java.lang.String contextName) {
-		return getService().fetchModule(appId, bundleSymbolicName, contextName);
+		java.lang.String bundleSymbolicName, java.lang.String bundleVersion,
+		java.lang.String contextName) {
+		return getService()
+				   .fetchModule(appId, bundleSymbolicName, bundleVersion,
+			contextName);
 	}
 
 	public static com.liferay.marketplace.model.Module fetchModule(

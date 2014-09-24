@@ -61,7 +61,8 @@ public interface ModuleLocalService extends BaseLocalService,
 
 	public com.liferay.marketplace.model.Module addModule(long userId,
 		long appId, java.lang.String bundleSymbolicName,
-		java.lang.String contextName);
+		java.lang.String bundleVersion, java.lang.String contextName)
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**
 	* Creates a new module with the primary key. Does not add the module to the database.
@@ -167,7 +168,8 @@ public interface ModuleLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.marketplace.model.Module fetchModule(long appId,
-		java.lang.String bundleSymbolicName, java.lang.String contextName);
+		java.lang.String bundleSymbolicName, java.lang.String bundleVersion,
+		java.lang.String contextName);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.marketplace.model.Module fetchModule(long moduleId);

@@ -14,27 +14,34 @@
 
 package com.liferay.marketplace.service.impl;
 
+import com.liferay.marketplace.ModuleNamespaceException;
 import com.liferay.marketplace.model.Module;
 import com.liferay.marketplace.service.base.ModuleLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 
 /**
  * @author Ryan Park
+ * @author Joan Kim
  */
 public class ModuleLocalServiceImpl extends ModuleLocalServiceBaseImpl {
 
 	@Override
 	public Module addModule(
-		long userId, long appId, String bundleSymbolicName,
-		String contextName) {
+			long userId, long appId, String bundleSymbolicName,
+			String bundleVersion, String contextName)
+		throws PortalException {
 
-		Module module = fetchModule(appId, bundleSymbolicName, contextName);
+		Module module = fetchModule(
+			appId, bundleSymbolicName, bundleVersion, contextName);
 
 		if (module != null) {
 			return module;
 		}
+
+		validate(bundleSymbolicName, contextName);
 
 		long moduleId = counterLocalService.increment();
 
@@ -43,6 +50,7 @@ public class ModuleLocalServiceImpl extends ModuleLocalServiceBaseImpl {
 		module.setModuleId(moduleId);
 		module.setAppId(appId);
 		module.setBundleSymbolicName(bundleSymbolicName);
+		module.setBundleVersion(bundleVersion);
 		module.setContextName(contextName);
 
 		modulePersistence.update(module);
@@ -52,10 +60,12 @@ public class ModuleLocalServiceImpl extends ModuleLocalServiceBaseImpl {
 
 	@Override
 	public Module fetchModule(
-		long appId, String bundleSymbolicName, String contextName) {
+		long appId, String bundleSymbolicName, String bundleVersion,
+		String contextName) {
 
 		if (Validator.isNotNull(bundleSymbolicName)) {
-			return modulePersistence.fetchByA_BSN(appId, bundleSymbolicName);
+			return modulePersistence.fetchByA_BSN_BV(
+				appId, bundleSymbolicName, bundleVersion);
 		}
 		else if (Validator.isNotNull(contextName)) {
 			return modulePersistence.fetchByA_CN(appId, contextName);
@@ -67,6 +77,16 @@ public class ModuleLocalServiceImpl extends ModuleLocalServiceBaseImpl {
 	@Override
 	public List<Module> getModules(long appId) {
 		return modulePersistence.findByAppId(appId);
+	}
+
+	protected void validate(String bundleSymbolicName, String contextName)
+		throws PortalException {
+
+		if (Validator.isNull(bundleSymbolicName) &&
+			Validator.isNull(contextName)) {
+
+			throw new ModuleNamespaceException();
+		}
 	}
 
 }
